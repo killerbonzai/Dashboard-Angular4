@@ -94,7 +94,7 @@ export class StationCartypeAmountComponent implements WidgetComponent, OnInit {
   switchCase(int: number) {
     switch (int) {
       case 0: {
-        this.carTypeName = "Person- og varebil";
+        this.carTypeName = "Lastbil 3 akslet";
         break;
       }
       case 1: {
@@ -102,7 +102,7 @@ export class StationCartypeAmountComponent implements WidgetComponent, OnInit {
         break;
       }
       case 2: {
-        this.carTypeName = "Lastbil 3 akslet";
+        this.carTypeName = "Person- og varebil";
         break;
       }
       case 3: {
