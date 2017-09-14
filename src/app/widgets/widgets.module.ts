@@ -12,6 +12,7 @@ import { TemplateDateTimePickerComponent } from './template-date-time-picker/tem
 import { NKDatetimeModule } from 'ng2-datetime/ng2-datetime';
 
 import { LoadingModule } from 'ngx-loading';
+import { CustomGraphComponent } from './custom-graph/custom-graph.component';
 
 @NgModule({
   imports: [
@@ -21,7 +22,7 @@ import { LoadingModule } from 'ngx-loading';
     FormsModule,
     LoadingModule
   ],
-  declarations: [ StationskortComponent, SpeedAverageHeatmapComponent, AverageSpeedHeatmapAllStationsComponent, StationCartypeAmountComponent],
+  declarations: [ StationskortComponent, SpeedAverageHeatmapComponent, AverageSpeedHeatmapAllStationsComponent, StationCartypeAmountComponent, CustomGraphComponent],
   schemas: [ ],
   providers: [LoadingModule]
 })
