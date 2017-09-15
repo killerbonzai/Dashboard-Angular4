@@ -5,11 +5,16 @@
     </ul>
     <div class="tab-content no-padding">
       <div class=" tab-pane active widget-frame" > 
-        <div #chart id="chart_div" width="400" height="300"></div>
+        <select [(ngModel)]="SelectedDataOptionX" (ngModelChange)="UpdateChart()">
+          <option *ngFor="let option of DataOptions" [ngValue]="option">{{option.dataProperty}}</option>
+        </select>
+        <select [(ngModel)]="SelectedDataOptionY" (ngModelChange)="UpdateChart()">
+            <option *ngFor="let option of DataOptions" [ngValue]="option">{{option.dataProperty}}</option>
+        </select>
+        <select [(ngModel)]="SelectedGraphType" (ngModelChange)="UpdateChart()">
+            <option *ngFor="let type of GraphTypes" [ngValue]="type">{{type}}</option>
+        </select>
+        <div #chart id="chart_div"></div>
       </div>
   </div>
 </div>
-
-
-
-
