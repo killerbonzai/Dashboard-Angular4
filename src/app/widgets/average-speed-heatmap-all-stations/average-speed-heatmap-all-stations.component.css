@@ -1,0 +1,10 @@
+.custom-btn-allstationsheatmap{
+    margin-bottom: 10px; 
+}
+
+@media (min-width: 768px) { 
+    .custom-btn-allstationsheatmap{
+        margin-bottom: 10px;
+        margin-top: 10px;
+    }
+}

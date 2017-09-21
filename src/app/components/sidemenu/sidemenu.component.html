@@ -29,9 +29,15 @@
             </a>
         <ul class="treeview-menu">
           <li *ngFor="let dashboard of dashboards">
-            <a href="#">{{dashboard.titel}} <i *ngIf="dashboard.removeable; then trash else notrash" ></i>
-            <ng-template #trash><i class="fa fa-trash pull-right" (click)="removeDashboard(dashboard)"></i></ng-template>
-            <ng-template #notrash><i class="pull-right"></i></ng-template></a>
+            <a (click)="changeDashboard(dashboard)" href="#"> {{dashboard.titel}}
+              <i class="fa fa-trash pull-right" (click)="removeDashboard(dashboard)"></i>
+              <i [ngClass]="dashboard.active ? 'fa fa-eye pull-right' : ''"></i>
+            </a>
+          </li>
+          <li>
+            <a (click)=createNewDashboard() href="#"> Opret nyt dashboard
+              <i class="fa fa-plus pull-right"></i>
+            </a>
           </li>
         </ul>
       </li>

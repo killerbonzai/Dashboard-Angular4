@@ -1,0 +1,52 @@
+<div class="box box-success" id="{{ id }}">
+  <div class="nav-tabs-custom" style="cursor: move;">
+    <ul class="nav nav-tabs pull-right ui-sortable-handle">
+      <li class="pull-left header"><i class="fa fa-bars"></i>{{ title }}</li>
+    </ul>
+    <div class="tab-content no-padding">
+      <div class=" tab-pane active widget-frame">
+
+        <div class="row widget-style">
+          <div class="col-sm-12 col-md-12 col-lg-12 ">
+
+            <div class="date-from-box">
+              <p >Fra:</p>
+              <datetime [datepicker]="datepickerOpts" [(ngModel)]="dateFrom" [timepicker]="{ showMeridian: false, minuteStep: 1, showSeconds:false, defaultTime:'current', explicitMode:false, icon: 'fa fa-clock-o'}"></datetime>
+            </div>
+
+            <!--getDate(dateFrom) = TEST  --> 
+            <p><b>{{getDate(dateFrom)}}</b></p>
+
+          </div>
+
+          <div class="col-sm-12 col-md-12 col-lg-12">
+            <p>Til:</p>
+            <div class="date-to-box">
+            <datetime [datepicker]="datepickerOpts" [(ngModel)]="dateTo" [timepicker]="{ showMeridian: false, minuteStep: 5, showSeconds:false, defaultTime:'current', explicitMode:false,  icon: 'fa fa-clock-o'}"></datetime>
+            </div>
+            <!--getDate(dateTo) = TEST  -->
+            <p><b>{{getDate(dateTo)}}</b></p>
+          </div>
+          
+
+          <div class="col-sm-12 col-md-12 col-lg-12">
+              <p>Vælg station:</p>
+              <select class="styled-select" [(ngModel)]="selectedStation">
+                  <option>station 1</option>
+                  <option>station 2</option>
+                  <option>station 3</option>
+                </select>
+              <button type="button" class="btn btn-primary spacing-btn small-mobile">Udregn</button>
+          </div>
+   
+        <div class="col-sm-12 col-md-12 col-lg-12"> 
+        <!--
+          insert stuff here
+         -->
+        </div>
+
+      </div>
+      </div>
+    </div>
+  </div>
+</div>

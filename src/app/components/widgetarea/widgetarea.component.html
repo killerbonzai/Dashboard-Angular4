@@ -1,7 +1,7 @@
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
   <!-- Content Header (Page header) -->
-  <section class="content-header">
+  <section *ngIf=contentHeader class="content-header">
     <div class="row">
       <div class="col-md-3 col-sm-6 col-xs-12">
         <div class="info-box">
@@ -59,21 +59,14 @@
 
   <!-- Main content -->
   <section class="content container-fluid">
-    <!-- widgets-->
     <div class="row">
-      <!-- Left col -->
-      <section class="col-lg-7 connectedSortable ui-sortable">
-        <ng-template appWidgetHost></ng-template>
+      <section [ngClass]="numCols > 1 ? 'col-lg-6' : 'col-lg-12'" class="connectedSortable ui-sortable">
+          <ng-template appWidgetHost></ng-template>
       </section>
-      <!-- /.Left col -->
-
-      <!-- right col-->
-      <section class="col-lg-5 connectedSortable ui-sortable">
-        
-      </section>
-      <!-- right col -->
+      
+      <section [ngClass]="numCols > 1 ? 'col-lg-6' : 'hide'" class= "connectedSortable ui-sortable">
+        </section> 
     </div>
-
   </section>
   <!-- /.content -->
 </div>
