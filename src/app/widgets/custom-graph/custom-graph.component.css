@@ -1,0 +1,8 @@
+.dotted {
+    border-bottom: 1px dotted #333;
+    text-decoration: none;
+}
+
+.dotted:hover {
+    cursor: pointer;
+}

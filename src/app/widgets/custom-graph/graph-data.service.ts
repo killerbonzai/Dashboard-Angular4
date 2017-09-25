@@ -8,6 +8,7 @@ export class GraphDataService{
     constructor(){
         this.dataOptions = new Array<DataPoint>();
         this.dataOptions.push(new DataPoint("Tid", DataType.Date));
+        this.dataOptions.push(new DataPoint("VehicleId", DataType.Integer));
         this.dataOptions.push(new DataPoint("Bane", DataType.Integer));
         this.dataOptions.push(new DataPoint("Hastighed", DataType.Integer));
         this.dataOptions.push(new DataPoint("Længde", DataType.Integer));
@@ -41,11 +42,9 @@ export enum DataType{
     Integer,
     Boolean,
     Double,
-    MinMax,
     Array,
     TimeStamp,
     Object,
     Null,
-    Symbol,
     Date
 }

@@ -25,6 +25,11 @@ export class CustomGraphComponent implements OnInit, WidgetComponent {
   @Input() SelectedDataOptionX: DataPoint;
   @Input() SelectedDataOptionY: DataPoint;
   @Input() SelectedGraphType: string;
+  labelX: string = "";
+  labelY: string = "";
+
+  dateFrom: Date = new Date("06/01/2017 15:00:00");
+  dateTo: Date = new Date();
 
   constructor(private chartService: GooglechartsService, private graphDataService: GraphDataService, private measurementService: MeasurementService) {
     this.DataOptions = graphDataService.getDataPoints();
@@ -32,12 +37,19 @@ export class CustomGraphComponent implements OnInit, WidgetComponent {
     this.GraphTypes = new Array<string>();
     this.GraphTypes.push("LineChart");
     this.GraphTypes.push("BarChart");
+    this.GraphTypes.push("ColumnChart");
     this.GraphTypes.push("PieChart");
-    this.GraphTypes.push("DonutChart");
+    this.GraphTypes.push("AreaChart");
+    this.GraphTypes.push("CalendarChart");
+    this.GraphTypes.push("SteppedChart");
+    this.GraphTypes.push("ScatterChart");
+    window.addEventListener("resize", () => {
+      this.UpdateChart();
+    });
   }
 
   UpdateChart(): void {
-    if(this.wrapper){
+    if (this.wrapper) {
       this.wrapper.setDataTable(this.getDataTableArray());
       this.wrapper.setChartType(this.SelectedGraphType);
       this.wrapper.draw(this.el.nativeElement);
@@ -47,25 +59,15 @@ export class CustomGraphComponent implements OnInit, WidgetComponent {
   ngOnInit() {
     this.chartService.ChartsLoaded().then(() => {
       this.SelectedDataOptionX = this.DataOptions[0]; // Datetime
-      this.SelectedDataOptionY = this.DataOptions[2]; // Speed
+      this.SelectedDataOptionY = this.DataOptions[3]; // Speed
       this.SelectedGraphType = this.GraphTypes[0];    // LineChart
 
       this.wrapper = new google.visualization.ChartWrapper({ chartType: this.SelectedGraphType });
-
-      this.wrapper.setDataTable(google.visualization.arrayToDataTable(this.getDataTableArray()));
-
-      this.wrapper.setOptions({
-        title: 'My Daily Activities',
-        orientation: 'horizontal'
-      });
-
-
-      this.wrapper.draw(this.el.nativeElement);
     });
 
   }
 
-  private getDataTableArray(){
+  private getDataTableArray() {
     let datatable = new Array();
     this.measurements.forEach(element => {
       datatable.push([this.getObjectProperty(this.SelectedDataOptionX, element), this.getObjectProperty(this.SelectedDataOptionY, element)])
@@ -80,7 +82,7 @@ export class CustomGraphComponent implements OnInit, WidgetComponent {
       }
     });
 
-    datatable.unshift([this.SelectedDataOptionX.dataProperty, this.SelectedDataOptionY.dataProperty]);
+    datatable.unshift([this.labelX, this.labelY]);
     return datatable;
   }
 
@@ -88,6 +90,8 @@ export class CustomGraphComponent implements OnInit, WidgetComponent {
     switch (dataPoint.dataProperty) {
       case "Tid":
         return new Date(obj.datetime);
+      case "VehicleId":
+        return Number.parseInt(obj.vehicleid);
       case "Bane":
         return Number.parseInt(obj.lane);
       case "Hastighed":

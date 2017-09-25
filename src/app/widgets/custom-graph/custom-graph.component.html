@@ -1,20 +1,20 @@
-<div class="box box-success" id="{{ id }}">
-  <div class="nav-tabs-custom" style="cursor: move;">
-    <ul class="nav nav-tabs pull-right ui-sortable-handle">
-      <li class="pull-left header"><i class="fa fa-bars"></i>{{ title }}</li>
-    </ul>
-    <div class="tab-content no-padding">
-      <div class=" tab-pane active widget-frame" > 
-        <select [(ngModel)]="SelectedDataOptionX" (ngModelChange)="UpdateChart()">
-          <option *ngFor="let option of DataOptions" [ngValue]="option">{{option.dataProperty}}</option>
-        </select>
-        <select [(ngModel)]="SelectedDataOptionY" (ngModelChange)="UpdateChart()">
-            <option *ngFor="let option of DataOptions" [ngValue]="option">{{option.dataProperty}}</option>
-        </select>
-        <select [(ngModel)]="SelectedGraphType" (ngModelChange)="UpdateChart()">
-            <option *ngFor="let type of GraphTypes" [ngValue]="type">{{type}}</option>
-        </select>
-        <div #chart id="chart_div"></div>
-      </div>
+<app-widgetcontainer>
+  <div class=" tab-pane active widget-frame">
+    <input type="text" [(ngModel)]="labelX" (ngModelChange)="UpdateChart();" />
+    <input type="text" [(ngModel)]="labelY" (ngModelChange)="UpdateChart();" />
+    <select [(ngModel)]="SelectedDataOptionX" (ngModelChange)="UpdateChart();">
+    <option *ngFor="let option of DataOptions" [ngValue]="option">{{option.dataProperty}}</option>
+  </select>
+    <select [(ngModel)]="SelectedDataOptionY" (ngModelChange)="UpdateChart()">
+      <option *ngFor="let option of DataOptions" [ngValue]="option">{{option.dataProperty}}</option>
+  </select>
+    <select [(ngModel)]="SelectedGraphType" (ngModelChange)="UpdateChart()">
+      <option *ngFor="let type of GraphTypes" [ngValue]="type">{{type}}</option>
+  </select>
+
+  <div>Fra <span class="dotted">{{dateFrom | date:'dd/MM/y HH:mm:ss'}}</span> til <span class="dotted">{{dateTo | date:'dd/MM/y HH:mm:ss'}}</span></div>
+    
   </div>
-</div>
+  <button (click)="UpdateChart()">Tegn graf</button>
+  <div #chart id="chart_div"></div>
+</app-widgetcontainer>
