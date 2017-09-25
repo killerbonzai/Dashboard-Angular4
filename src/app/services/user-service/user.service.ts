@@ -20,13 +20,13 @@ export class UserService {
 
     //Test - Last parameter is null, so a configuration will be generated
     if(this.user == undefined){
-      let d = new Dashboard(1, "Standard1Col", 1, [5]);
-      let d2 = new Dashboard(2, "Content2col", 4, [5]);
+      let d = new Dashboard(1, "Standard1Col", 1, [2]);
+      let d2 = new Dashboard(2, "Content2col", 4, [2]);
       let das = [];
       das.push(d);
       das.push(d2);
       let config = new Configuration(das);
-      this.user = new User("Darnell", "Tyrone", "IT & Digitalisering", "Praktikant", config); 
+      this.user = new User("Mikkel", "Andersen", "IT & Digitalisering", "Praktikant", config); 
     }
     return this.user;
   }

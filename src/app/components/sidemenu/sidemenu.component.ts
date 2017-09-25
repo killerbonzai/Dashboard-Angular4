@@ -51,8 +51,8 @@ export class SidemenuComponent {
 
   listAllWidgets() {
     //Convert all widgets to MenuElements from WidgetLibrary
-    for (var index = 1; index <= this.widgetService.widgets.size; index++) {
-      let w = this.widgetService.getWidgetbyId(index);
+    for(let key of this.widgetService.getWidgetIds()) {
+      let w = this.widgetService.getWidgetbyId(key);
       let element = new MenuElement(
         w.id,
         false, false,
@@ -98,15 +98,18 @@ export class SidemenuComponent {
       //generates and menuelement for each widget and pushes into list.
       widgets.forEach(widgetId => {
         let widget = this.widgetService.getWidgetbyId(widgetId);
-
-        let element = new MenuElement(
-          widget.id, true, true, widget.title);
-
-        //Rezise name to max 20 letters
-        if (element.titel.length > 20) {
-          element.titel = element.titel.slice(0, 20) + "...";
+        
+        if(widget){
+          let element = new MenuElement(
+            widget.id, true, true, widget.title);
+  
+          //Rezise name to max 20 letters
+          if (element.titel.length > 20) {
+            element.titel = element.titel.slice(0, 20) + "...";
+          }
+          this.activeWidgets.push(element);
         }
-        this.activeWidgets.push(element);
+        
       })
     }
   }

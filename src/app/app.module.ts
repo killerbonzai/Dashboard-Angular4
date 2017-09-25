@@ -16,12 +16,14 @@ import { WidgetLibraryService } from './services/widgetLibrary-service/widget-li
 import { WidgetHostDirective } from './directives/widget-host.directive';
 import { UserService } from './services/user-service/user.service';
 import { DashboardcontrollerService } from "./services/dashboardcontroller-service/dashboardcontroller.service";
-import { GmapService } from './widgets/stationskort/gmap.service';
-import { GmapSAService } from './widgets/speed-average-heatmap/gmap.service';
-import { GmapSAASService } from './widgets/average-speed-heatmap-all-stations/gmap.service';
+
+import { GoogleMapsContainerService } from "./services/googlemapscontainer/googlemapscontainer.service";
 
 import { HttpModule } from '@angular/http';
+
 //danymic components
+import { LoadingModule } from 'ngx-loading';
+
 
 @NgModule({
   declarations: [
@@ -37,9 +39,10 @@ import { HttpModule } from '@angular/http';
   imports: [
     BrowserModule,
     HttpModule,
-    FormsModule
+    FormsModule,
+    LoadingModule
   ],
-  providers: [WidgetLibraryService, UserService, DashboardcontrollerService, GmapService, GmapSAService, GmapSAASService ],
+  providers: [WidgetLibraryService, UserService, DashboardcontrollerService, GoogleMapsContainerService, LoadingModule],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

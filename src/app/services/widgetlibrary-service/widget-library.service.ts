@@ -5,8 +5,8 @@ import {WidgetsModule} from '../../widgets/widgets.module';
 
 @Injectable()
 export class WidgetLibraryService {
-  widgets: Map<number, WidgetItem>;
-  compiler: Compiler;
+  private widgets: Map<number, WidgetItem>;
+  private compiler: Compiler;
 
   constructor(cFactory: CompilerFactory, appRef: ApplicationRef) {
     this.widgets = new Map<number, WidgetItem>();
@@ -31,5 +31,9 @@ export class WidgetLibraryService {
 
   public getWidgetbyId(widgetId: number): WidgetItem {
     return this.widgets.get(widgetId);
+  }
+
+  public getWidgetIds(): Array<number>{
+    return Array.from(this.widgets.keys());
   }
 }

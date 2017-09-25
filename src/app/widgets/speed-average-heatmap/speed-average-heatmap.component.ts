@@ -1,51 +1,98 @@
-import { Component, Input, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, Input, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 import { WidgetComponent } from '../../services/widgetLibrary-service/widget.component';
+import { GoogleMapsContainerService } from '../../services/googlemapscontainer/googlemapscontainer.service';
 import { GmapSAService } from './gmap.service';
 import { Http, Response } from '@angular/http';
 import 'rxjs/add/operator/map';
 
-import { FormsModule  } from '@angular/forms';
-import { DatePickerModule, DatePickerOptions, DateModel } from 'ng2-datepicker';
+import { FormsModule } from '@angular/forms';
 
+
+import * as $ from 'jquery';
+declare var swal: any;
 
 @Component({
   selector: '[app-speed-average-heatmap]',
   templateUrl: './speed-average-heatmap.component.html',
-  styleUrls: ['./speed-average-heatmap.component.css']
+  styleUrls: ['./speed-average-heatmap.component.css'],
+  providers: [GmapSAService]
 })
 
-export class SpeedAverageHeatmapComponent implements OnInit {
+export class SpeedAverageHeatmapComponent implements OnInit, OnDestroy {
   @Input("3") id: number;
-  @Input("Average Speed Heatmap") title: string;
+  @Input("Enkelt station: Gennemsnitshastighed") title: string;
   @ViewChild('map') mapRef: ElementRef;
 
-  dateTo: DateModel;
-  dateFrom: DateModel;
-  options: DatePickerOptions;
-  options2: DatePickerOptions;
   station: String;
 
-  heatmap : google.maps.visualization.HeatmapLayer;
+  heatmap: google.maps.visualization.HeatmapLayer;
   data: any = [];
 
+  // datetime picker
+  dateFrom: Date = new Date();
+  dateTo: Date = new Date();
+  datepickerOpts = {
+    autoclose: true,
+    todayHighlight: true,
+    assumeNearbyYear: true,
+    format: 'd MM yyyy',
+    icon: 'fa fa-calendar'
+  }
+
+  // all stations
+  private apiUrlStations: string = "http://adm-trafik-01.odknet.dk:2001/api/GetAllStations/Stations";
+  dataStations: any[];
+  selectedItem: string;
+  areacode: number;
+
+  //spinner
+  showContentBool: boolean = false;
+  public loading = false;
+
   private apiUrl;
-  constructor(private gmapSAService: GmapSAService, private http: Http) { 
-    this.options = new DatePickerOptions();
-    this.options2 = new DatePickerOptions();
-    this.options.format = "YYYY-MM-DD";
-    this.options2.format = "YYYY-MM-DD";
+
+  constructor(private gmapSAService: GmapSAService, private http: Http) {
   }
   ngOnInit() {
-    this.initGoogleMap()
-  } 
-  onClick(){
-    this.apiUrl= "http://adm-trafik-01.odknet.dk:2001/api/AverageSpeed/GetMeasurementsBetweenDates?from="+this.dateTo.formatted+"&to="+this.dateFrom.formatted+"&station="+this.station;
-    this.LoadHeatmap()
-    console.log(this.apiUrl)
-    console.log("clicked!")
+    this.initGoogleMap();
+    this.getAllStations();
   }
-  initGoogleMap(){
-    (this.gmapSAService.initMap(this.mapRef.nativeElement, {
+
+  ngOnDestroy() {
+    this.gmapSAService.delete();
+  }
+
+  getAllStations() {
+    this.http.get(this.apiUrlStations).map((res: Response) => res.json()).subscribe(data => {
+      this.dataStations = data;
+    })
+
+  }
+  getSelectedStation() {
+
+    this.dataStations.forEach(station => {
+      if (station.name == this.selectedItem) {
+        this.selectedItem = station.name;
+        this.areacode = station.areacode;
+        return;
+      }
+    });
+
+  }
+
+  onClick() {
+    this.loading = true;
+    var dateFrom = this.dateFrom.toISOString().slice(0, 10);
+    var timeFrom = this.dateFrom.getHours() + ":" + (this.dateFrom.getMinutes() < 10 ? '0' : '') + this.dateFrom.getMinutes();
+    var dateTo = this.dateTo.toISOString().slice(0, 10);
+    var timeTo = this.dateTo.getHours() + ":" + (this.dateTo.getMinutes() < 10 ? '0' : '') + this.dateTo.getMinutes();
+
+    this.apiUrl = "http://adm-trafik-01.odknet.dk:2001/api/AverageSpeed/GetMeasurementsBetweenDates?from=" + dateFrom + "%20" + timeFrom + "&to=" + dateTo + "%20" + timeTo + "&areaCode=" + this.areacode;
+    this.LoadHeatmap()
+
+  }
+  initGoogleMap() {
+    (this.gmapSAService.initMap(this.title, this.mapRef.nativeElement, {
       center: { lat: 55.3931161, lng: 10.3854726 },
       scrollwheel: true,
       zoom: 11,
@@ -53,11 +100,19 @@ export class SpeedAverageHeatmapComponent implements OnInit {
       maxZoom: 16,
       streetViewControl: false,
       mapTypeControl: false
-    },null));
+    }, null));
   }
-  LoadHeatmap():void{
+  LoadHeatmap(): void {
     this.http.get(this.apiUrl).map((res: Response) => res.json()).subscribe(marker => {
-      this.gmapSAService.addHeatmap(Number(marker.latitude), Number(marker.longitude), Number(marker.averageSpeed), marker.name);
+      if(marker.name == null){
+        swal("Ingen data fundet", "Vælg andet tidspunkt", "error")
+        this.loading = false;
+      }
+      else{
+        this.gmapSAService.addHeatmap(Number(marker.latitude), Number(marker.longitude), marker.measurement, marker.name);
+        this.loading = false;
+      }
+    
     })
   }
 }

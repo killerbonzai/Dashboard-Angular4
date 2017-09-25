@@ -1,4 +1,4 @@
-import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { FormsModule } from "@angular/forms";
 import { CommonModule } from '@angular/common';
 import { TestboxComponent } from './testbox/testbox.component';
@@ -11,14 +11,18 @@ import { TemplateDateTimePickerComponent } from './template-date-time-picker/tem
 
 import { NKDatetimeModule } from 'ng2-datetime/ng2-datetime';
 
+import { LoadingModule } from 'ngx-loading';
+
 @NgModule({
   imports: [
     CommonModule,
     DatePickerModule,
     NKDatetimeModule,
-    FormsModule
+    FormsModule,
+    LoadingModule
   ],
-  declarations: [TestboxComponent, StationskortComponent, SpeedAverageHeatmapComponent, AverageSpeedHeatmapAllStationsComponent, TemplateDateTimePickerComponent, StationCartypeAmountComponent],
-  schemas: [ ]
+  declarations: [ StationskortComponent, SpeedAverageHeatmapComponent, AverageSpeedHeatmapAllStationsComponent, StationCartypeAmountComponent],
+  schemas: [ ],
+  providers: [LoadingModule]
 })
 export class WidgetsModule { }

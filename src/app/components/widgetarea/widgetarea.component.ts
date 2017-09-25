@@ -49,17 +49,18 @@ export class WidgetareaComponent implements OnInit {
 
     //Get Widget
     let widget: WidgetItem = this.widgetService.getWidgetbyId(widgetId);
-    
-    //Resolve component
-    let viewContainerRef = this.widgetHost.viewContainerRef;
+    if(widget){
+      //Resolve component
+      let viewContainerRef = this.widgetHost.viewContainerRef;
 
-    //Create component into DOM and set values.
-    let componentRef = viewContainerRef.createComponent(widget.factory);
-    (<WidgetComponent>componentRef.instance).id = widget.id;
-    (<WidgetComponent>componentRef.instance).title = widget.title;
+      //Create component into DOM and set values.
+      let componentRef = viewContainerRef.createComponent(widget.factory);
+      (<WidgetComponent>componentRef.instance).id = widget.id;
+      (<WidgetComponent>componentRef.instance).title = widget.title;
 
-    //Add to active Widgets list
-    this.activeWidgets.push(widget.id);
+      //Add to active Widgets list
+      this.activeWidgets.push(widget.id);
+      }    
   }
 
   private removeWidget(widgetId: number) {
