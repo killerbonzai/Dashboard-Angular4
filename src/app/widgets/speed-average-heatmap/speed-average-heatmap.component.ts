@@ -82,12 +82,7 @@ export class SpeedAverageHeatmapComponent implements OnInit, OnDestroy {
 
   onClick() {
     this.loading = true;
-    var dateFrom = this.dateFrom.toISOString().slice(0, 10);
-    var timeFrom = this.dateFrom.getHours() + ":" + (this.dateFrom.getMinutes() < 10 ? '0' : '') + this.dateFrom.getMinutes();
-    var dateTo = this.dateTo.toISOString().slice(0, 10);
-    var timeTo = this.dateTo.getHours() + ":" + (this.dateTo.getMinutes() < 10 ? '0' : '') + this.dateTo.getMinutes();
-
-    this.apiUrl = "http://adm-trafik-01.odknet.dk:2001/api/AverageSpeed/GetMeasurementsBetweenDates?from=" + dateFrom + "%20" + timeFrom + "&to=" + dateTo + "%20" + timeTo + "&areaCode=" + this.areacode;
+    this.apiUrl = `http://adm-trafik-01.odknet.dk:2001/api/AverageSpeed/GetMeasurementsBetweenDates?from=${this.dateFrom.toISOString()}&to=${this.dateTo.toISOString()}&areaCode=${this.areacode}`;
     this.LoadHeatmap()
 
   }
