@@ -70,12 +70,7 @@ export class StationCartypeAmountComponent implements WidgetComponent, OnInit {
 
   getApiData() {
     this.loading = true;
-    var dateFrom = this.dateFrom.toISOString().slice(0, 10);
-    var timeFrom = this.dateFrom.getHours() + ":" + (this.dateFrom.getMinutes() < 10 ? '0' : '') + this.dateFrom.getMinutes();
-    var dateTo = this.dateTo.toISOString().slice(0, 10);
-    var timeTo = this.dateTo.getHours() + ":" + (this.dateTo.getMinutes() < 10 ? '0' : '') + this.dateTo.getMinutes();
-
-    this.apiUrl = "http://adm-trafik-01.odknet.dk:2004/api/CarType/GetCarTypes?from=" + dateFrom + "%20" + timeFrom + "&to=" + dateTo + "%20" + timeTo + "&areacode=" + this.areacode;
+    this.apiUrl = `http://adm-trafik-01.odknet.dk:2004/api/CarType/GetCarTypes?from=${this.dateFrom.toISOString()}&to=${this.dateTo.toISOString()}&areacode=${this.areacode}`;
     console.log(this.apiUrl)
 
     this.http.get(this.apiUrl).map((res: Response) => res.json()).subscribe(data => {
@@ -94,7 +89,7 @@ export class StationCartypeAmountComponent implements WidgetComponent, OnInit {
   switchCase(int: number) {
     switch (int) {
       case 0: {
-        this.carTypeName = "Person- og varebil";
+        this.carTypeName = "Lastbil 3 akslet";
         break;
       }
       case 1: {
@@ -102,7 +97,7 @@ export class StationCartypeAmountComponent implements WidgetComponent, OnInit {
         break;
       }
       case 2: {
-        this.carTypeName = "Lastbil 3 akslet";
+        this.carTypeName = "Person- og varebil";
         break;
       }
       case 3: {
