@@ -52,13 +52,7 @@ export class AverageSpeedHeatmapAllStationsComponent implements OnInit, OnDestro
 
   onClick() {
     this.loading = true;
- 
-    var dateFrom = this.dateFrom.toISOString().slice(0, 10);
-    var timeFrom = this.dateFrom.getHours() + ":" + (this.dateFrom.getMinutes() < 10 ? '0' : '') + this.dateFrom.getMinutes();
-    var dateTo = this.dateTo.toISOString().slice(0, 10);
-    var timeTo = this.dateTo.getHours() + ":" + (this.dateTo.getMinutes() < 10 ? '0' : '') + this.dateTo.getMinutes();
-
-    this.apiUrl = "http://adm-trafik-01.odknet.dk:2003/api/AverageSpeed/GetMeasurementsBetweenDatesAllStations?from=" + dateFrom + "%20" + timeFrom + "&to=" + dateTo + "%20" + timeTo;
+    this.apiUrl = `http://adm-trafik-01.odknet.dk:2003/api/AverageSpeed/GetMeasurementsBetweenDatesAllStations?from=${this.dateFrom.getHours()}&to=${this.dateTo.toISOString()}`;
     this.LoadHeatmap()
   }
 
