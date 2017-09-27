@@ -16,6 +16,7 @@ import { WidgetLibraryService } from './services/widgetLibrary-service/widget-li
 import { WidgetHostDirective } from './directives/widget-host.directive';
 import { UserService } from './services/user-service/user.service';
 import { DashboardcontrollerService } from "./services/dashboardcontroller-service/dashboardcontroller.service";
+import { GooglechartsService } from "./services/googlechart/googlechart.service";
 
 import { GoogleMapsContainerService } from "./services/googlemapscontainer/googlemapscontainer.service";
 
@@ -42,7 +43,7 @@ import { LoadingModule } from 'ngx-loading';
     FormsModule,
     LoadingModule
   ],
-  providers: [WidgetLibraryService, UserService, DashboardcontrollerService, GoogleMapsContainerService, LoadingModule],
+  providers: [WidgetLibraryService, GooglechartsService, UserService, DashboardcontrollerService, GoogleMapsContainerService, LoadingModule],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
