@@ -1,0 +1,48 @@
+<div class="box box-success" id="{{ id }}">
+  <div class="nav-tabs-custom" style="cursor: move;">
+    <ul class="nav nav-tabs pull-right ui-sortable-handle">
+      <li class="pull-left header"><i class="fa fa-bars"></i>{{ title }}</li>
+    </ul>
+
+    <div class="tab-content no-padding">
+      <ngx-loading [show]="loading"></ngx-loading>
+
+      <div class=" tab-pane active widget-frame">
+        <div class="row widget-style">
+
+          <div class="col-sm-12 col-md-12 col-lg-12 ">
+              <div id="htm-chart"></div>
+          </div>
+          <div class="col-sm-12 col-md-12 col-lg-12 ">
+
+            <div class="date-from-box">
+              <p>Fra:</p>
+              <datetime [datepicker]="datepickerOpts" [(ngModel)]="dateFrom" [timepicker]="{ showMeridian: false, minuteStep: 1, showSeconds:false, defaultTime:'current', explicitMode:false, icon: 'fa fa-clock-o'}"></datetime>
+            </div>
+
+          </div>
+
+          <div class="col-sm-12 col-md-12 col-lg-12">
+            <p>Til:</p>
+            <div class="date-to-box">
+              <datetime [datepicker]="datepickerOpts" [(ngModel)]="dateTo" [timepicker]="{ showMeridian: false, minuteStep: 5, showSeconds:false, defaultTime:'current', explicitMode:false,  icon: 'fa fa-clock-o'}"></datetime>
+            </div>
+          </div>
+
+          <div class="col-sm-12 col-md-12 col-lg-12">
+            <p>Vælg station: (Anderupvej, rismarksvej,volsmoseallé, falen, Niels bohr, Nyborgvej)</p>
+
+            <select (click)="getSelectedStation()" class="styled-select" [(ngModel)]="selectedItem">
+                <option *ngFor="let item of dataStations" [ngValue]="item.name"> {{ item.name }}</option>
+            </select>
+
+            <button type="button" class="btn btn-primary spacing-btn small-mobile" (click)="buttonClick()">Udregn</button>
+            <br><br/>
+        
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

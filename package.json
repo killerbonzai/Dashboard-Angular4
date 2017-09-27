@@ -21,7 +21,11 @@
     "@angular/platform-browser": "^4.2.4",
     "@angular/platform-browser-dynamic": "^4.2.4",
     "@angular/router": "^4.2.4",
+<<<<<<< HEAD
     "@types/google.visualization": "0.0.38",
+=======
+    "@types/google.visualization": "0.0.40",
+>>>>>>> 34837ef27f7a43571dbe291ec958c24f3543b851
     "@types/googlemaps": "^3.26.20",
     "@types/jquery": "^3.2.12",
     "admin-lte": "^2.3.11",

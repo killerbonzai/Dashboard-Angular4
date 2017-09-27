@@ -13,6 +13,8 @@ import { NKDatetimeModule } from 'ng2-datetime/ng2-datetime';
 
 import { LoadingModule } from 'ngx-loading';
 import { CustomGraphModule } from './custom-graph/custom-graph.module';
+import { HtmChartComponent } from './htm-chart/htm-chart.component';
+import { HtmChartMapComponent } from './htm-chart-map/htm-chart-map.component';
 
 @NgModule({
   imports: [
@@ -23,7 +25,7 @@ import { CustomGraphModule } from './custom-graph/custom-graph.module';
     LoadingModule,
     CustomGraphModule
   ],
-  declarations: [ StationskortComponent, SpeedAverageHeatmapComponent, AverageSpeedHeatmapAllStationsComponent, StationCartypeAmountComponent ],
+  declarations: [ StationskortComponent, SpeedAverageHeatmapComponent, AverageSpeedHeatmapAllStationsComponent, StationCartypeAmountComponent,  HtmChartComponent, HtmChartMapComponent],
   schemas: [ ],
   providers: [LoadingModule]
 })
