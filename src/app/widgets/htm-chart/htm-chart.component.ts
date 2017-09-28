@@ -10,9 +10,11 @@ declare var swal: any;
   selector: '[app-htm-chart]',
   templateUrl: './htm-chart.component.html',
   styleUrls: ['./htm-chart.component.css'],
+  providers: [GooglechartsService]
 })
+
 export class HtmChartComponent implements OnInit, WidgetComponent {
-  @Input("9") id: number;
+  @Input("12") id: number;
   @Input("Anomaly detection") title: string;
 
   dateFrom: Date = new Date();
