@@ -1,0 +1,12 @@
+<h4>Filter</h4>
+Lane: 
+<select multiple id="lanes" (change)="filterservice.updateLanes()">
+  <option value="1">1</option>
+  <option value="2">2</option>
+  <option value="3">3</option>
+  <option value="4">4</option>
+</select>
+
+<label for="flash">Flash</label> <input id="flash" type="checkbox" [checked]="filterservice.flash" (change)="filterservice.flash = !filterservice.flash"/>
+<label for="wrongdir">Forkert retning</label> <input id="wrongdir" type="checkbox"  [checked]="filterservice.wrongdir" (change)="filterservice.wrongdir = !filterservice.wrongdir"/>
+<label for="display">Display</label> <input id="display" type="checkbox" [checked]="filterservice.display" (change)="filterservice.display = !filterservice.display" />
