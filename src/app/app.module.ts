@@ -16,9 +16,9 @@ import { WidgetLibraryService } from './services/widgetLibrary-service/widget-li
 import { WidgetHostDirective } from './directives/widget-host.directive';
 import { UserService } from './services/user-service/user.service';
 import { DashboardcontrollerService } from "./services/dashboardcontroller-service/dashboardcontroller.service";
-import { GooglechartsService } from "./services/googlechart/googlechart.service";
 
 import { GoogleMapsContainerService } from "./services/googlemapscontainer/googlemapscontainer.service";
+import { GooglechartsService } from "./services/googlecharts/googlecharts.service";
 
 import { HttpModule } from '@angular/http';
 

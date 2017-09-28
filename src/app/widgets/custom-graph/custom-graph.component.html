@@ -1,0 +1,21 @@
+<app-widgetcontainer>
+  <div class=" tab-pane active widget-frame">
+    <input type="text" [(ngModel)]="labelX" />
+    <input type="text" [(ngModel)]="labelY" />
+    <select [(ngModel)]="SelectedDataOptionX">
+      <option *ngFor="let option of DataOptions" [ngValue]="option">{{option.dataProperty}}</option>
+    </select>
+    <select [(ngModel)]="SelectedDataOptionY" >
+      <option *ngFor="let option of DataOptions" [ngValue]="option">{{option.dataProperty}}</option>
+    </select>
+    <select [(ngModel)]="SelectedGraphType" >
+      <option *ngFor="let type of GraphTypes" [ngValue]="type">{{type}}</option>
+    </select>
+
+    <div>Fra <span class="dotted">{{dateFrom | date:'dd/MM/y HH:mm:ss'}}</span> til <span class="dotted">{{dateTo | date:'dd/MM/y HH:mm:ss'}}</span></div>
+    <app-filters></app-filters>
+    <app-groups></app-groups>
+  </div>
+  <button (click)="UpdateChart()">Tegn graf</button>
+  <div #chart id="chart_div"></div>
+</app-widgetcontainer>

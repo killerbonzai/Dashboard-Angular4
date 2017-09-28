@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { WidgetComponent } from '../../services/widgetLibrary-service/widget.component';
-import { GooglechartsService } from '../../services/googlechart/googlechart.service';
+import { GooglechartsService } from '../../services/googlecharts/googlecharts.service';
 import { Http, Response } from '@angular/http';
 
 import * as $ from 'jquery';
@@ -9,10 +9,11 @@ declare var swal: any;
 @Component({
   selector: '[app-htm-chart]',
   templateUrl: './htm-chart.component.html',
-  styleUrls: ['./htm-chart.component.css'],
+  styleUrls: ['./htm-chart.component.css']
 })
+
 export class HtmChartComponent implements OnInit, WidgetComponent {
-  @Input("9") id: number;
+  @Input("12") id: number;
   @Input("Anomaly detection") title: string;
 
   dateFrom: Date = new Date();
