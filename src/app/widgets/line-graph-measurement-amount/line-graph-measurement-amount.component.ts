@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { WidgetComponent } from '../../services/widgetLibrary-service/widget.component';
-import { GooglechartsService } from '../../services/googlechart/googlechart.service';
+import { GooglechartsService } from '../../services/googlecharts/googlecharts.service';
 import { Http, Response } from '@angular/http';
 
 @Component({
