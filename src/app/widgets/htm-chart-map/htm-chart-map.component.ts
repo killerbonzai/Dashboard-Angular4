@@ -94,7 +94,16 @@ export class HtmChartMapComponent implements OnInit, WidgetComponent, OnDestroy 
           });
           if (found > 0) {
             this.getSelectedStation(station);
-            this.addMarker(this.lati, this.longi, this.statname +  "\nAnomalies: " + found);
+            var marker = new google.maps.Marker({
+              position: {lat: this.lati, lng: this.longi},
+              map: map,
+              title: this.statname +  "\nAnomalies: " + found
+            })
+            //this.addMarker(this.lati, this.longi, this.statname +  "\nAnomalies: " + found);
+            marker.addListener('click', function() {
+              // do your thing
+              // like make graph and shit
+            });
           }
         }   
         this.loading = false;
