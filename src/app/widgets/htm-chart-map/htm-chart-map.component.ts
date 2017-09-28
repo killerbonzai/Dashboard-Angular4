@@ -79,7 +79,7 @@ export class HtmChartMapComponent implements OnInit, WidgetComponent, OnDestroy 
       this.map = map;
       // Anderupvej: 46102360 -- Falen: 46171141
 
-      // No "live" data after 25 september -------------->
+      // No "live" data after 25 september (Last checked 28 september 16:16) -------------->
 
         // wtf javascript. zero indexed months. 0 = january ... 8 = september
       var datefrom = new Date(2017,8,15,15,23,47,0);
