@@ -31,6 +31,22 @@ export class GroupsService {
     this.groupRangesLabel.set(i, val);
   }
 
+  getRangeString(i: Number){
+    let r = this.groupRanges.get(i);
+    if(r)
+      return r.string();
+    else
+      return "";
+  }
+
+  getRangeLabelString(i: Number){
+    let l = this.groupRangesLabel.get(i);
+    if(l)
+      return l;
+    else
+      return "";
+  }
+
   reset(){
     this.groupRanges = new Map<Number, GroupRange>();
     this.groupRangesLabel = new Map<Number, String>();
@@ -45,5 +61,9 @@ class GroupRange {
   constructor(start: Number, end: Number) {
     this.start = start;
     this.end = end;
+  }
+
+  string(){
+    return `${this.start},${this.end}`;
   }
 }

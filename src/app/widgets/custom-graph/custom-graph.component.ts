@@ -87,9 +87,8 @@ export class CustomGraphComponent implements OnInit, WidgetComponent {
 
     if (this.groupsservice.group) {
       this.groupsservice.amountArray.forEach((val, key) => {
-        datatable.push([this.groupsservice.groupRangesLabel[key.toString()], val]);
+        datatable.push([this.groupsservice.groupRangesLabel.get(key), val]);
       });
-      this.groupsservice.reset();
     } else {
       datatable.sort((a, b) => {
         if (a[0] === b[0]) {
