@@ -1,6 +1,8 @@
 import { Component, Input, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { WidgetComponent } from '../../services/widgetLibrary-service/widget.component';
 import { GooglechartsService } from '../../services/googlecharts/googlecharts.service';
+import { FiltersService } from './components/filters/filters.service';
+import { GroupsService } from './components/groups/groups.service';
 import { DataPoint, GraphDataService } from './graph-data.service';
 import { MeasurementService } from './measurement.service';
 
@@ -8,7 +10,7 @@ import { MeasurementService } from './measurement.service';
   selector: '[app-custom-graph]',
   templateUrl: './custom-graph.component.html',
   styleUrls: ['./custom-graph.component.css'],
-  providers: [GraphDataService, MeasurementService]
+  providers: [FiltersService, GraphDataService, MeasurementService, GroupsService],
 })
 export class CustomGraphComponent implements OnInit, WidgetComponent {
   @Input("7") id: number;
@@ -31,9 +33,8 @@ export class CustomGraphComponent implements OnInit, WidgetComponent {
   dateFrom: Date = new Date("06/01/2017 15:00:00");
   dateTo: Date = new Date();
 
-  constructor(private chartService: GooglechartsService, private graphDataService: GraphDataService, private measurementService: MeasurementService) {
+  constructor(private chartService: GooglechartsService, private graphDataService: GraphDataService, private measurementService: MeasurementService, private filtersservice: FiltersService, private groupsservice: GroupsService) {
     this.DataOptions = graphDataService.getDataPoints();
-    this.measurements = this.measurementService.getMeasurements();
     this.GraphTypes = new Array<string>();
     this.GraphTypes.push("LineChart");
     this.GraphTypes.push("BarChart");
@@ -50,6 +51,8 @@ export class CustomGraphComponent implements OnInit, WidgetComponent {
 
   UpdateChart(): void {
     if (this.wrapper) {
+      this.measurements = this.measurementService.getMeasurements();
+      this.groupsservice.amountArray.forEach((val, key)=>{this.groupsservice.amountArray[key.toString()]=0;});
       this.wrapper.setDataTable(this.getDataTableArray());
       this.wrapper.setChartType(this.SelectedGraphType);
       this.wrapper.draw(this.el.nativeElement);
@@ -70,17 +73,35 @@ export class CustomGraphComponent implements OnInit, WidgetComponent {
   private getDataTableArray() {
     let datatable = new Array();
     this.measurements.forEach(element => {
-      datatable.push([this.getObjectProperty(this.SelectedDataOptionX, element), this.getObjectProperty(this.SelectedDataOptionY, element)])
+      if (this.filtersservice.wrongdir == (element.wrong_dir == 0 ? false : true) && (this.filtersservice.lanes.indexOf(element.lane) >= 0)) {
+        if (this.groupsservice.group) {
+          this.groupsservice.groupRanges.forEach((val, key) => {
+            if (this.getObjectProperty(this.SelectedDataOptionX, element) >= val.start && this.getObjectProperty(this.SelectedDataOptionX, element) <= val.end)
+              this.groupsservice.amountArray[key.toString()]++;
+          });
+        } else {
+          datatable.push([this.getObjectProperty(this.SelectedDataOptionX, element), this.getObjectProperty(this.SelectedDataOptionY, element)]);
+        }
+      }
     });
 
-    datatable.sort((a, b) => {
-      if (a[0] === b[0]) {
-        return 0;
-      }
-      else {
-        return (a[0] < b[0]) ? -1 : 1;
-      }
-    });
+    if (this.groupsservice.group) {
+      this.groupsservice.amountArray.forEach((val, key) => {
+        datatable.push([this.groupsservice.groupRangesLabel[key.toString()], val]);
+      });
+      this.groupsservice.reset();
+    } else {
+      datatable.sort((a, b) => {
+        if (a[0] === b[0]) {
+          return 0;
+        }
+        else {
+          return (a[0] < b[0]) ? -1 : 1;
+        }
+      });
+    }
+
+
 
     datatable.unshift([this.labelX, this.labelY]);
     return datatable;
