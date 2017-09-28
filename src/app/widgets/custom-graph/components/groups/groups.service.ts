@@ -46,4 +46,8 @@ class GroupRange {
     this.start = start;
     this.end = end;
   }
+
+  string(){
+    return `${this.start},${this.end}`;
+  }
 }
