@@ -1,0 +1,11 @@
+<h4>Groups</h4>
+<input type="checkbox" [checked]="groupsservice.group" (change)="groupsservice.group = !groupsservice.group" id="group" /><label for="group">Gruppér</label>
+
+<div *ngIf="groupsservice.group">
+  Antal grupper: <input type="text" [(ngModel)]="groupsservice.amount" size="2" (change)="groupsservice.numberToArray($event.target.value)" />
+  <div *ngIf="groupsservice.amount">
+    <div *ngFor="let val of groupsservice.amountArray; let i = index">
+      Gruppenavn: <input type="text" (change)="groupsservice.addGroupRangeLabel(i, $event.target.value)" [value]="groupsservice.getRangeLabelString(i)" /> værdier: <input type="text"  (change)="groupsservice.addGroupRange(i, $event.target.value)" [value]="groupsservice.getRangeString(i)" />
+    </div>
+  </div>
+</div>

@@ -1,4 +1,4 @@
-import { Injectable, CompilerFactory, ApplicationRef, Compiler } from '@angular/core';
+import { Injectable, CompilerFactory, Compiler } from '@angular/core';
 import { WidgetItem } from './widget-item';
 
 import {WidgetsModule} from '../../widgets/widgets.module';
@@ -8,7 +8,7 @@ export class WidgetLibraryService {
   private widgets: Map<number, WidgetItem>;
   private compiler: Compiler;
 
-  constructor(cFactory: CompilerFactory, appRef: ApplicationRef) {
+  constructor(cFactory: CompilerFactory) {
     this.widgets = new Map<number, WidgetItem>();
 
     //Register all widgets here

@@ -34,14 +34,16 @@ export class HtmChartMapComponent implements OnInit, WidgetComponent, OnDestroy 
 
   constructor(private gmapService: GoogleMapsContainerService, private http: Http) {
     this.getAllStations();
-    Observable.interval(1000 * 60).subscribe(x => {
-      this.initGoogleMap();
-    });
+    //Observable.interval(1000 * 60).subscribe(x => {
+      //this.initGoogleMap();
+    //});
    }
 
   ngOnInit() {
+
     this.initGoogleMap();
   }
+
 
   ngOnDestroy() {
     this.gmapService.deleteMap(this.title);
@@ -76,7 +78,16 @@ export class HtmChartMapComponent implements OnInit, WidgetComponent, OnDestroy 
     }).then((map) => {
       this.map = map;
       // Anderupvej: 46102360 -- Falen: 46171141
-      this.apiUrl = `http://adm-trafik-01.odknet.dk:2011/api/Anomaly/GetAnomalies?from=${new Date(Date.now() - 60*60000).toISOString()}&to=${new Date().toISOString()}&areacode=46102360`;
+
+      // No "live" data after 25 september (Last checked 28 september 16:16) -------------->
+
+        // wtf javascript. zero indexed months. 0 = january ... 8 = september
+      var datefrom = new Date(2017,8,15,15,23,47,0);
+      var septdate = new Date(2017,8,25,15,23,47,0);
+      // ------------------------------------------------>
+
+      this.apiUrl = `http://adm-trafik-01.odknet.dk:2011/api/Anomaly/GetAnomalies?from=${datefrom.toISOString()}&to=${septdate.toISOString()}&areacode=46102360`;
+     
       var found = 0;
       this.http.get(this.apiUrl).map((res: Response) => res.json()).subscribe(data => {
         this.data = data;
