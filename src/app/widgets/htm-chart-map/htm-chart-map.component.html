@@ -4,6 +4,7 @@
       <li class="pull-left header"><i class="fa fa-bars"></i>{{ title }}</li>
     </ul>
     <div class="tab-content no-padding">
+        <ngx-loading [show]="loading"></ngx-loading>
       <div class=" tab-pane active widget-frame" >
          <div #map id="map"></div>
       </div>
