@@ -2,8 +2,9 @@ import { Component, OnInit, Input, ViewChild, ElementRef, OnDestroy } from '@ang
 import { WidgetComponent } from '../../services/widgetLibrary-service/widget.component';
 import { GoogleMapsContainerService } from "../../services/googlemapscontainer/googlemapscontainer.service";
 import { Http, Response } from '@angular/http';
-import {Observable} from 'rxjs/Rx';
+import { Observable } from 'rxjs/Rx';
 
+import * as $ from 'jquery';
 import 'rxjs/add/operator/map';
 declare var swal: any;
 
@@ -18,15 +19,11 @@ export class HtmChartMapComponent implements OnInit, WidgetComponent, OnDestroy 
   @ViewChild('map') mapRef: ElementRef;
 
   public loading = false;
-  map: google.maps.Map;
   // all stations
   private apiUrlStations: string = "http://adm-trafik-01.odknet.dk:2002/api/GetAllStations/Stations";
   dataStations: any[];
-  selectedItem: string;
-  areacode: number;
-  private apiUrl: string;
   data: any[];
-  
+
   // selected station info
   longi: number;
   lati: number;
@@ -35,15 +32,13 @@ export class HtmChartMapComponent implements OnInit, WidgetComponent, OnDestroy 
   constructor(private gmapService: GoogleMapsContainerService, private http: Http) {
     this.getAllStations();
     //Observable.interval(1000 * 60).subscribe(x => {
-      //this.initGoogleMap();
+    //this.initGoogleMap();
     //});
-   }
-
-  ngOnInit() {
-
-    this.initGoogleMap();
   }
 
+  ngOnInit() {
+    this.initGoogleMap();
+  }
 
   ngOnDestroy() {
     this.gmapService.deleteMap(this.title);
@@ -62,7 +57,8 @@ export class HtmChartMapComponent implements OnInit, WidgetComponent, OnDestroy 
         this.lati = station.latitude;
         this.longi = station.longitude;
         return;
-      }});
+      }
+    });
   }
 
   initGoogleMap() {
@@ -76,54 +72,56 @@ export class HtmChartMapComponent implements OnInit, WidgetComponent, OnDestroy 
       streetViewControl: false,
       mapTypeControl: false
     }).then((map) => {
-      this.map = map;
       // Anderupvej: 46102360 -- Falen: 46171141
-
       // No "live" data after 25 september (Last checked 28 september 16:16) -------------->
-
-        // wtf javascript. zero indexed months. 0 = january ... 8 = september
-      var datefrom = new Date(2017,8,15,15,23,47,0);
-      var septdate = new Date(2017,8,25,15,23,47,0);
-      // ------------------------------------------------>
-
-      this.apiUrl = `http://adm-trafik-01.odknet.dk:2011/api/Anomaly/GetAnomalies?from=${datefrom.toISOString()}&to=${septdate.toISOString()}&areacode=46102360`;
-     
-      var found = 0;
-      this.http.get(this.apiUrl).map((res: Response) => res.json()).subscribe(data => {
-        this.data = data;
-        if(this.data.length < 1){
-          swal ( "Ingen data fundet" ,  "Vælg andet tidspunkt" ,  "error" )
-          this.loading = false;
-        }else{
-          // map it
-          var station = 0;
-          this.data.forEach(element => {
-            station = element.stationid;
-            if (element.anomaly_likelihood as number > 0.85) {
-              found++;
-            }
-          });
-          if (found > 0) {
-            this.getSelectedStation(station);
-            var marker = new google.maps.Marker({
-              position: {lat: this.lati, lng: this.longi},
-              map: map,
-              title: this.statname +  "\nAnomalies: " + found
-            })
-            //this.addMarker(this.lati, this.longi, this.statname +  "\nAnomalies: " + found);
-            marker.addListener('click', function() {
-              // do your thing
-              // like make graph and shit
-            });
-          }
-        }   
-        this.loading = false;
-      });
+      // wtf javascript. zero indexed months. 0 = january ... 8 = september
+      this.checkAnomalies(map, 46102360)
+      this.checkAnomalies(map, 46171141)
     })
-  );
-}// end initGoogleMap
-  
-  addMarker(lat: number, lng: number, name: string): void{
-    new google.maps.Marker({map: this.map, title: name, position: {lat:lat, lng:lng}});
+    );
+  }// end initGoogleMap
+
+  checkAnomalies(map, areacode) { // TODO: change to take dates too
+    var datefrom = new Date(2017, 8, 15, 15, 23, 47, 0);
+    var septdate = new Date(2017, 8, 25, 15, 23, 47, 0);
+    // ------------------------------------------------>
+
+    var apiUrl = `http://adm-trafik-01.odknet.dk:2011/api/Anomaly/GetAnomalies?from=${datefrom.toISOString()}&to=${septdate.toISOString()}&areacode=${areacode}`;
+
+    this.http.get(apiUrl).map((res: Response) => res.json()).subscribe(data => {
+      //this.data = data;
+      if (data.length < 1) {
+        swal("Ingen data fundet", "Vælg andet tidspunkt", "error")
+        this.loading = false;
+      } else {
+        // map it
+        var found = 0;
+        var station = 0;
+        data.forEach(element => {
+          station = element.stationid;
+          if (element.anomaly_likelihood as number > 0.85) { // maybe set in the widget
+            found++;
+          }
+        });
+        if (found > 0) {
+          this.getSelectedStation(station);
+          var label = found.toString() // write number of anomalies in the marker
+          var title = this.statname + "\nAnomalies: " + found // mouse over info .. doesn't work with label .. can be used for saving data for click event
+          // TODO: change title to ...
+          var marker = this.addMarker(map, this.lati, this.longi, found.toString(), title)
+          marker.addListener('click', function () { // marker click event
+            console.log("marker clicked")
+            //marker.setAnimation(google.maps.Animation.BOUNCE);
+            // TODO: do your thing
+            // like make graph and shit
+          });
+        }
+      }
+      this.loading = false;
+    });
+  }
+
+  addMarker(map: google.maps.Map, lat: number, lng: number, label: string, title: string): google.maps.Marker {
+    return new google.maps.Marker({ map: map, title: title, label: label, position: { lat: lat, lng: lng } });
   }
 }
